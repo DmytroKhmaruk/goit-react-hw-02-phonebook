@@ -31,11 +31,10 @@ export class App extends Component {
     return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
   }
   onRemoveContact = contactId => {
-    const filteredContacts = this.state.contacts.filter(contact => contact.id !== contactId);
-    this.setState({      
-      contacts: filteredContacts,
-    });
-  };
+  this.setState(prevState => ({
+    contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+  }));
+};
   
   render() {
      const filteredContact = this.getFilteredContact();
