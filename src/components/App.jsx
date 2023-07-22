@@ -1,5 +1,8 @@
 import { Component } from 'react';
-import Container from 'components/Container';
+import Container from './Container';
+import Contacts from './Contacts';
+import ContactForm from './ContactForm';
+import Filter from './Filter';
 import { nanoid } from 'nanoid';
 
 const INITIAL_STATE = {
@@ -28,23 +31,27 @@ export class App extends Component {
     return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
   }
   onRemoveContact = contactId => {
+    const filteredContacts = this.state.contacts.filter(contact => contact.id !== contactId);
     this.setState({      
-      contacts: this.state.contacts.filter(contact => contact.id !== contactId),
+      contacts: filteredContacts,
     });
   };
   
   render() {
-    
-    const filteredContact = this.getFilteredContact();
+     const filteredContact = this.getFilteredContact();
     return (
-        <Container
-          formAddContact={this.formAddContact}
-          value={this.state.filter}
-          handleOnChangeFilter={this.handleOnChangeFilter}
-          filteredContact={filteredContact}
-          contactsArr = {this.state.contacts}
-          onRemoveContact={this.onRemoveContact}
-        />        
+      <Container>
+        <h1>Phonebook</h1>
+
+        <ContactForm formAddContact={this.formAddContact} contactsArr={this.state.contacts}/>
+        
+        <h2>Contacts</h2>
+        
+        <Filter value={this.state.filter} handleOnChangeFilter={this.handleOnChangeFilter}/>
+        
+        <Contacts filteredContact={filteredContact} onRemoveContact={this.onRemoveContact} handleOnChangeFilter={this.handleOnChangeFilter}/>
+
+        </Container>       
     );
   }
 }
